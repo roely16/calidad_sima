@@ -211,6 +211,16 @@ app.controller('plazosController', ['$scope', '$http', '$routeParams', '$timeout
     /** Documentos en tiempo */
     $scope.documentosEnTiempo = function(){
 
+        $scope.todosDocumentos()
+
+        console.log($scope.documentos);
+
+        const result = $scope.documentos.filter(documento => documento.CUMPLIMIENTO == 1 || (!documento.PLAZO_HORAS && documento.FECHA_ENTREGA))
+
+        $scope.documentos = result
+        $scope.filter_data = $scope.documentos.length
+
+        /*
         $scope.obteniendo_datos();
 
         $http({
@@ -238,14 +248,23 @@ app.controller('plazosController', ['$scope', '$http', '$routeParams', '$timeout
             $scope.filter_data = $scope.documentos.length
 
         })
+        */
 
     }
 
     /** Documentos en proceso */
     $scope.documentosEnProceso = function(){
 
-        $scope.obteniendo_datos();
+        $scope.todosDocumentos()
 
+        const result = $scope.documentos.filter(documento => !documento.FECHA_ENTREGA)
+
+        $scope.documentos = result
+        $scope.filter_data = $scope.documentos.length
+
+        /*
+        $scope.obteniendo_datos();
+        
         $http({
 
             method: 'POST',
@@ -271,12 +290,21 @@ app.controller('plazosController', ['$scope', '$http', '$routeParams', '$timeout
             $scope.filter_data = $scope.documentos.length
 
         })
+        */
 
     }
 
     /** Documentos fuera de tiempo */
     $scope.documentosFueraTiempo = function(){
 
+        $scope.todosDocumentos()
+
+        const result = $scope.documentos.filter(documento => documento.CUMPLIMIENTO == 0)
+
+        $scope.documentos = result
+        $scope.filter_data = $scope.documentos.length
+
+        /*
         $scope.obteniendo_datos();
 
         $http({
@@ -304,6 +332,7 @@ app.controller('plazosController', ['$scope', '$http', '$routeParams', '$timeout
             $scope.filter_data = $scope.documentos.length
 
         })
+        */
 
     }
 
