@@ -24,7 +24,8 @@ app.controller('plazosController', ['$scope', '$http', '$routeParams', '$timeout
         data: {
             "name": "reporte_cumplimiento_plazos",
             "param": {
-
+                "fecha_inicio": null,
+                "fecha_fin": null
             }
         },
         headers: {
@@ -110,7 +111,7 @@ app.controller('plazosController', ['$scope', '$http', '$routeParams', '$timeout
             method: 'POST',
             url: '/GestionServicios/calidad_sima_api/',
             data: {
-                "name": "reporte_cumplimiento_plazos_filtrado",
+                "name": "reporte_cumplimiento_plazos",
                 "param": {
                     "fecha_inicio": $scope.filtrar.FECHA_INICIO,
                     "fecha_fin": $scope.filtrar.FECHA_FIN
