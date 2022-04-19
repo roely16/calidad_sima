@@ -1,0 +1,233 @@
+<div class="content" data-ng-init="cargarGraficas()" ng-show="!isLoading">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h1>CONTROL DE CALIDAD</h1>
+                    <h2>SIMA</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <form ng-submit="actualizarGraficas()" autocomplete="off">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>
+                                        <strong>Fecha Inicio</strong>
+                                    </label>
+                                    <input class="form-control" ng-model="dashboard.FECHA_INICIO" id="datetimepicker1" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>
+                                        <strong>Fecha Fin</strong>
+                                    </label>
+                                    <input class="form-control" ng-model="dashboard.FECHA_FIN" id="datetimepicker2" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>
+                                        <strong>Gráfica</strong>
+                                    </label>
+                                    <select ng-options="option.id as option.name for option in grafica_select" ng-model="dashboard.GRAFICA" class="form-control" required>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2 align-self-center">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+		<!-- Indicador de Calidad -->
+		<!-- <div class="col-lg-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row" style="padding-bottom: 20px">
+						<div class="col-lg-12 text-center">
+                            <h4>
+                                <strong>
+                                    Indicador de Calidad
+                                </strong>
+                            </h4>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+
+        <!-- Gráfica 1 -->
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row" style="padding-bottom: 20px">
+                        <div class="col-lg-12 text-center">
+                            <h4>
+                                <strong>
+                                    Expedientes Recibidos del Sector Justicia
+                                </strong>
+                            </h4>
+                        </div>
+                    </div>
+                    <div id="grafica1_container">
+                        <canvas id="grafica1"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfica 2 -->
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row" style="padding-bottom: 20px">
+                        <div class="col-lg-6 text-left">
+                            <h4>
+                                <strong>
+                                    Control de Calidad
+                                </strong>
+                            </h4>
+                        </div>
+                        <div class="col-lg-6 text-right">
+                            <h4>
+                                <strong>
+                                    Total de Documentos
+                                    <span class="badge badge-primary">
+                                        {{ total_documentos_calidad }}
+                                    </span>
+                                </strong>
+                            </h4>
+                        </div>
+                    </div>
+                    <div id="grafica2_container">
+                        <canvas id="grafica2"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row" style="padding-bottom: 20px">
+						<div class="col-lg-6 text-left">
+                            <h4>
+                                <strong>
+                                    Criterios de Calidad
+                                </strong>
+                            </h4>
+                        </div>
+					</div>
+					<div id="grafica3_container">
+                        <canvas id="grafica3"></canvas>
+                    </div>
+				</div>
+			</div>
+		</div>
+
+		<!-- <div class="col-lg-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row" style="padding-bottom: 20px">
+						<div class="col-lg-6 text-left">
+                            <h4>
+                                <strong>
+                                    Calidad por Técnico
+                                </strong>
+                            </h4>
+                        </div>
+					</div>
+					<div id="grafica4_container">
+                        <canvas id="grafica4"></canvas>
+                    </div>
+				</div>
+			</div>
+		</div> -->
+
+    </div>
+
+    <!-- Modal de documentos -->
+    <div class="modal fade" id="modalDetalleRechazos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Documentos Rechazados</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <table class="table table-borderless">
+                            <thead>
+                              <tr>
+                                <th scope="col" class="w-40">Expediente</th>
+                                <th scope="col" class="w-30">Usuario</th>
+                                <th scope="col" class="w-25">Fecha</th>
+                                <th scope="col" class="w-5 text-center">Detalles</th>
+
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat-start="documento in documentos_rechazados">
+                                    <th>{{ documento.DOCUMENTO }} - {{ documento.ANIO }}</th>
+                                    <td>{{ documento.USUARIO }}</td>
+                                    <td>{{ documento.FECHA }}</td>
+                                    <td class="text-center">
+                                        <button type="button" ng-click="mostrarErrores(documento)" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#collapseExample{{$index}}" aria-expanded="false" aria-controls="collapseExample">
+                                            <i class="fas fa-search-plus"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr ng-repeat-end class="collapse" id="collapseExample{{$index}}">
+                                    <td class="w-100" colspan="12">
+                                        <!-- <span class="badge badge-danger" ng-repeat="error in documento.ERRORES">{{ error }}</span> -->
+                                        <div class="card">
+                                            <div class="card-body">
+                                                    <ul class="list-group">
+                                                           
+                                                        <li class="list-group-item list-group-item-danger" ng-repeat="error in documento.ERRORES">{{ error }}</li>
+                                                    
+                                                    </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                            
+                          </table>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+</div>
